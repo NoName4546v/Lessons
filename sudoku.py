@@ -1,55 +1,53 @@
-board = ["5","3",".",".","7",".",".",".","."
-        ,"6",".",".","1","9","5",".",".","."
-        ,".","9","8",".",".",".",".","6","."
-        ,"8",".",".",".","6",".",".",".","3"
-        ,"4",".",".","8",".","3",".",".","1"
-        ,"7",".",".",".","2",".",".",".","6"
-        ,".","6",".",".",".",".","2","8","."
-        ,".",".",".","4","1","9",".",".","5"
-        ,".",".",".",".","8",".",".","7","9"]
+board = [["5","3",".",".","7",".",".",".","."]
+        ,["6",".",".","1","9","5",".",".","."]
+        ,[".","9","8",".",".",".",".","6","."]
+        ,["8",".",".",".","6",".",".",".","3"]
+        ,["4",".",".","8",".","3",".",".","1"]
+        ,["7",".",".",".","2",".",".",".","6"]
+        ,[".","6",".",".",".",".","2","8","."]
+        ,[".",".",".","4","1","9",".",".","5"]
+        ,[".",".",".",".","8",".",".","7","9"]]
 
-horizontal = []
-vertical = []
-cube = []
+def horizontal_find(str):
+    horizontal = []
+    for i in board[str]:
+        if i != ".":
+            horizontal.append(i)
+    return horizontal
 
-while True:
-    for i in board:
-        #Горизонталь
-        if board.index(i) < 9:
-            for a in range(0, 8):
-                if a != ".":
-                    horizontal.append(a)
-        elif board.index(i) < 18 and board.index(i)> 8:
-            for a in range(8, 17):
-                if a != ".":
-                    horizontal.append(a)
-        elif board.index(i) < 27 and board.index(i)> 17:
-            for a in range(17, 26):
-                if a != ".":
-                    horizontal.append(a)
-        elif board.index(i) < 36 and board.index(i)> 26:
-            for a in range(26, 35):
-                if a != ".":
-                    horizontal.append(a)
-        elif board.index(i) < 45 and board.index(i)> 35:
-            for a in range(35, 44):
-                if a != ".":
-                    horizontal.append(a)
-        elif board.index(i) < 54 and board.index(i)> 44:
-            for a in range(44, 53):
-                if a != ".":
-                    horizontal.append(a)
-        elif board.index(i) < 54 and board.index(i)> 53:
-            for a in range(53, 62):
-                if a != ".":
-                    horizontal.append(a)
-        elif board.index(i) < 54 and board.index(i)> 62:
-            for a in range(62, 71):
-                if a != ".":
-                    horizontal.append(a)
-        elif board.index(i) < 54 and board.index(i)> 71:
-            for a in range(71, 80):
-                if a != ".":
-                    horizontal.append(a)
+def vertical_find(board, a):
+    vertical = []
+    for i in range(0, 8):
+        if board[i][a] != ".":
+            vertical.append(board[i][a])
+    return vertical
 
-        #Вертикаль
+def cube_find(board, line, col):
+    cube = []
+    lines = board[3*line : 3*line+3]
+    for i in lines:
+        columns = i[3*col : 3*col+3]
+        while "." in columns:
+            columns.remove(".")
+        cube.extend(columns)
+    return cube
+
+def invert_list(list):
+    list_2 = []
+    for i in range(1, 10):
+        if str(i) not in list:
+            list_2.append(i)
+    return list_2
+
+def find_num(vert, horiz, cube):
+    res = []
+    tmp_list = min(vert, horiz, cube,key=len)
+    for i in tmp_list:
+        if i in vert and i in horiz and i in cube:
+            res.append(i)
+    return res
+
+for i in board:
+    for a in i:
+        if a == ".":
+            print(i.index(a), board.index(i),vertical_find(board, i.index(a)), horizontal_find(board.index(i)), cube_find(board, board.index(i)//3, i.index(a)//3))
